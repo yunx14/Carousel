@@ -14,29 +14,31 @@ class Carousel {
 
     initEvents() {
         this.controls.style.display = 'grid';
-        this.nextButton.addEventListener("click", () => this.moveToNext());
-        this.prevButton.addEventListener("click", () => this.moveToPrev());
+        this.prevButton.addEventListener("click", () => this.moveTo(this.currentIndex - 1));
+    this.nextButton.addEventListener("click", () => this.moveTo(this.currentIndex + 1));
+        this.container.addEventListener("keydown", (e) => this.onKeyDown(e));
       }
 
 
-    moveToNext() {
-        if (this.currentIndex < this.cards.length - 1) {
-            this.currentIndex++;
-            this.updateTransform();
+    moveTo(index) {
+        if (index >= 0 && index < this.cards.length) {
+            this.currentIndex = index;
+            this.track.style.transform = `translateX(-${this.cardWidth * index}px)`;
+
+            // Move focus to active card
+            this.cards[this.currentIndex].focus?.();
         }
     }
 
-    moveToPrev() {
-        if (this.currentIndex > 0) {
-            this.currentIndex--;
-            this.updateTransform();
+    onKeyDown(e) {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          this.moveTo(this.currentIndex + 1);
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          this.moveTo(this.currentIndex - 1);
         }
-    }
-
-    updateTransform() {
-        const offset = this.cardWidth * this.currentIndex;
-        this.track.style.transform = `translateX(-${offset}px)`;
-    }
+      }
 }
 
 const carousels = document.querySelectorAll('.carousel');
