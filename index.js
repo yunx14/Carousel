@@ -6,7 +6,7 @@ class Carousel {
         this.cards = this.container.querySelectorAll(".card");
         this.prevButton = this.container.querySelector(".button--prev");
         this.nextButton = this.container.querySelector(".button--next");
-        this.cardWidth = this.cards[0].offsetWidth + 10;
+        this.cardWidth = this.cards[0].offsetWidth;
         this.currentIndex = 0;
 
         this.initEvents();
@@ -24,7 +24,7 @@ class Carousel {
         if (index >= 0 && index < this.cards.length) {
             this.currentIndex = index;
             this.track.style.transform = `translateX(-${this.cardWidth * index}px)`;
-
+            console.log(this.cards[this.currentIndex]);
             // Move focus to active card
             this.cards[this.currentIndex].focus?.();
         }
