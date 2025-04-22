@@ -15,20 +15,21 @@ class Carousel {
     initEvents() {
         this.controls.style.display = 'grid';
         this.prevButton.addEventListener("click", () => this.moveTo(this.currentIndex - 1));
-    this.nextButton.addEventListener("click", () => this.moveTo(this.currentIndex + 1));
+        this.nextButton.addEventListener("click", () => this.moveTo(this.currentIndex + 1));
         this.container.addEventListener("keydown", (e) => this.onKeyDown(e));
       }
 
 
-    moveTo(index) {
-        if (index >= 0 && index < this.cards.length) {
-            this.currentIndex = index;
-            this.track.style.transform = `translateX(-${this.cardWidth * index}px)`;
-            console.log(this.cards[this.currentIndex]);
-            // Move focus to active card
-            this.cards[this.currentIndex].focus?.();
-        }
-    }
+      moveTo(index) {
+        const maxOffset = this.track.scrollWidth - this.container.offsetWidth;
+        const targetOffset = Math.min(index * this.cardWidth, maxOffset);
+      
+        this.currentIndex = Math.round(targetOffset / this.cardWidth);
+        this.track.style.transform = `translateX(-${targetOffset}px)`;
+        this.track.style.transition = 'transform 0.4s ease-in-out';
+      
+        this.cards[this.currentIndex].focus?.();
+      }
 
     onKeyDown(e) {
         if (e.key === 'ArrowRight') {
